@@ -42,3 +42,4 @@ function renderArticle(singleArticle){
   `;
 }
 FetchAsync()
+
