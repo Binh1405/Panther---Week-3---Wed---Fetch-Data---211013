@@ -4,89 +4,82 @@ const ctx = document.getElementById('myChart').getContext('2d');
 async function getCryptoPrices(){
     const response = await fetch(cryptoURL)
     const json = await response.json()
-    console.log("this is json", json)
-    const coin = []
-    coin.push(json.data)
-    console.log("this is array coin", coin)
+    const coin = json.data[0]
+    // console.log("this is json", json)
+    // const coin = []
+    // coin.push(json.data)
+    // console.log("this is array coin", coin)
     renderLineGraph(coin)
 }
 getCryptoPrices()
 
 function renderLineGraph(coin){
     const ctx = document.getElementById("myChart")
-    coin.forEach(element => {
-    const price = element.quote.USD.price;
-    const [ninetyAgoPrice] = getHistoricPrices(element.quote.USD)
+    // coin.forEach(element => {
+    const price = coin.quote.USD.price;
+    const [ninetyAgoPrice] = getHistoricPrices(coin.quote.USD)
     const timeAgo = ["90d", "60d", "30d", "7d", "24h", "1h", "Current"]
-    const coinObj = {
-        type: "line", 
+    const myChart = new Chart(ctx, {    
+    type: "line", 
         data: {
             labels: timeAgo,
             datasets: [
                 {
                  label: "Bitcoin", 
                  borderWidth: 1, 
-                 data: getHistoricPrices(element.quote.USD),
+                 data: getHistoricPrices(coin.quote.USD),
                  borderColor: "rgba(255, 99, 132, 1)", 
                  backgroundColor: "rgba(255, 99, 132, 0.2)",
                 },
                 {
                     label: "Ethereum", 
                     borderWidth: 1, 
-                    data: getHistoricPrices(element.quote.USD),
+                    data: getHistoricPrices(coin.quote.USD),
                     borderColor: "rgba(255, 99, 132, 1)", 
-                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    backgroundColor: "rgba(25, 99, 132, 0.2)",
                    },
                    {
                     label: "Binance", 
                     borderWidth: 1, 
-                    data: getHistoricPrices(element.quote.USD),
+                    data: getHistoricPrices(coin.quote.USD),
                     borderColor: "rgba(255, 99, 132, 1)", 
-                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    backgroundColor: "rgba(255, 9, 132, 0.2)",
                    },
                    {
                     label: "Cardano", 
                     borderWidth: 1, 
-                    data: getHistoricPrices(element.quote.USD),
+                    data: getHistoricPrices(coin.quote.USD),
                     borderColor: "rgba(255, 99, 132, 1)", 
-                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    backgroundColor: "rgba(255, 99, 32, 0.2)",
                    },
                    {
                     label: "Tether", 
                     borderWidth: 1, 
-                    data: getHistoricPrices(element.quote.USD),
+                    data: getHistoricPrices(coin.quote.USD),
                     borderColor: "rgba(255, 99, 132, 1)", 
-                    backgroundColor: "rgba(255, 99, 132, 0.2)",
+                    backgroundColor: "rgba(255, 99, 132, 2)",
                    },
             ],
         },
-    }
-    console.log("this is coinObj", coinObj);
-    })
-}
-
-
-    // const myChart = new Chart (ctx, coinObj)
-//         options: {
-//             tooltips: {
-//               enabled: true,
-//               mode: "nearest",
-//             },
-//             scales: {
-//               yAxes: [
-//                 {
-//                   ticks: {
-//                     beginAtZero: false,
-//                     suggestedMax: price,
-//                     suggestedMin: ninetyAgoPrice,
-//                   },
-//                 },
-//               ],
-//             },
-//           },
-//     })
-// }
-//     )}
+        options: {
+            tooltips: {
+              enabled: true,
+              mode: "nearest",
+            },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    beginAtZero: false,
+                    suggestedMax: price,
+                    suggestedMin: ninetyAgoPrice,
+                  },
+                },
+              ],
+            },
+          },
+        });
+      }
 
 function getHistoricPrices(prices){
     const {
